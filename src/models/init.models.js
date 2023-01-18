@@ -6,21 +6,51 @@ const Categories = require('./categories.model');
 const Todos_categories = require('./todos_categories.model');
 
 
+
 const initModels = () => {
 
   //creamos las relasciones
   //hasOne ---->tiene uno
   //hasMany --->tiene muchos
   //belongsTo ---->pertenece a
-  Todos.belongsTo(Users,{as:'author',foreignKey:'user_id'});
-  Users.hasMany(Todos,{as:'task',foreignKey:'user_id'});
+  Todos.belongsTo(Users, {
+    as: 'author',
+    foreignKey: 'user_id'
+  });
+  Users.hasMany(Todos, {
+    as: 'task',
+    foreignKey: 'user_id'
+  });
   
   // relacion M-M  categorias y tareas
-  Todos_categories.belongsTo(Todos,{as:'task',foreignKey:'todo_id'});
-  Todos.hasMany(Todos_categories,{as:'category',foreignKey:'todo_id'});
+  Todos_categories.belongsTo(Todos, {
+    as: 'task',
+    foreignKey: 'todo_id'
+  });
+  Todos.hasMany(Todos_categories, {
+    as: 'categories', 
+    foreignKey: 'todo_id'
+  });
 
-  Todos_categories.belongsTo(Categories,{as:'category',foreignKey:'category_id'});
-  Categories.hasMany(Todos_categories,{as:'task',foreignKey:'category_id'});
+  Todos_categories.belongsTo(Categories,{
+    as: 'category', 
+    foreignKey: 'category_id'
+  });
+  Categories.hasMany(Todos_categories, {
+    as: 'task',
+    foreignKey: 'category_id'
+  });
+
+  //relacion M-M users y categorias
+Categories.belongsTo(Users,{
+  as:'categories',
+  foreignKey:'user_id'
+});
+Users.hasMany(Categories,{
+  as:'author',
+  foreignKey:'user_id',
+
+})
 
 }
 module.exports = initModels;
